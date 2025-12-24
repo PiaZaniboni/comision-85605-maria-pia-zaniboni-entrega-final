@@ -1,0 +1,200 @@
+{
+	"info": {
+		"_postman_id": "ea168f34-01e5-4f1d-9031-bdacae9e4f94",
+		"name": "Entrega 1 - Backend II",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45345851",
+		"_collection_link": "https://zaniboni-5675.postman.co/workspace/Curso-Backend~f4b65143-fe2f-4a3c-a2b5-eb0a9857390d/collection/45345851-ea168f34-01e5-4f1d-9031-bdacae9e4f94?action=share&source=collection_link&creator=45345851"
+	},
+	"item": [
+		{
+			"name": "Health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/health",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/users",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name\": \"Maggie\",\n    \"last_name\": \"Simpson\",\n    \"email\": \"maggie.simpson@test.com\",\n    \"age\": 18,\n    \"password\": \"pass1234\",\n    \"cart\": null,\n    \"role\": \"user\"    \n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/sessions/register",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"sessions",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n/*USUARIO COMUN*/\n/*\n{\n  \"email\": \"homero.simpson@test.com\",\n  \"password\": \"pass1234\"\n}*/\n\n/*ADMIN*/\n\n{\n    \"email\": \"pia.zaniboni@admin.com\",\n    \"password\": \"pass1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/sessions/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"sessions",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Log out",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"ferro@ana.com\",\n  \"password\": \"435345\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/sessions/logout",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"sessions",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Current (privado)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"homero.simpson@test.com\",\n  \"password\": \"pass1234\"\n}\n\n/*\n{\n    \"email\": \"pia.zaniboni@admin.com\",\n    \"password\": \"pass1234\"\n}*/"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/sessions/current",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"sessions",
+						"current"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ping privada",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/private/ping",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"private",
+						"ping"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

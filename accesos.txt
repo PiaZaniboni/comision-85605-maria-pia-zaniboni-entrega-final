@@ -1,0 +1,22 @@
+# Puerto HTTP
+PORT=3000
+# URL de MongoDB 
+MONGODB_URI="mongodb+srv://piazanibonidev_db_user:4YVp0gS8uJeb14V77@backend2.3btpvlt.mongodb.net/"
+MONGO_DB="integrative_practice"
+
+# SESSION
+SESSION_SECRET="7773f9c4be7b1d94f0f8c2a6e55d7a91c4eab78e0c3f2d947ab1df0b83c6a4f92e1"
+SESSION_TTL_MIN=30
+SESSION_STORE = "mongo"
+
+#JWT
+JWT_SECRET=2f91b0eec7d14e72a3a9b2445df8c0aa9e8f77a34c6f4b919d0c7137b6e120cf
+JWT_EXPIRES=15m
+
+#COOKIES
+COOKIE_SAMESITE= "lax"
+COOKIE_SECURE= false
+COOKIE_SECRET=5c3d1f1c8d944f4e8bbd2ce5b0b7c2f243c3d1e9a4e67781e3b5d2c8f19e7abc
+COOKIE_NAME=currentUser
+
+BCRYPT_ROUNDS = 10
