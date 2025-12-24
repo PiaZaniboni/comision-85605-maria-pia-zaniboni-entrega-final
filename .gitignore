@@ -1,0 +1,5 @@
+.DS_Store
+.env
+accesos.txt
+
+node_modules

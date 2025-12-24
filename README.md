@@ -1,11 +1,10 @@
-# Entrega Nº 1 -- Backend II
+# Entrega Final -- Backend II
 
 ### Alumna: María Pía Zaniboni
 
 ## 📌 Descripción del Proyecto
 
-Este repositorio corresponde a la **Entrega 1** de la materia **Backend
-II**, donde se implementa:
+Este repositorio corresponde a la **Entrega Fianal** del curso **Backend II**, donde se implementa:
 
 -   CRUD de usuarios
 -   Registro con contraseña encriptada con **bcrypt**
@@ -21,13 +20,13 @@ II**, donde se implementa:
 Para descargar el repositorio:
 
 ``` bash
-git clone https://github.com/PiaZaniboni/comision-85605-maria-pia-zaniboni.git
+git clone https://github.com/PiaZaniboni/comision-85605-maria-pia-zaniboni-entrega-final
 ```
 
 Luego ingresar al directorio:
 
 ``` bash
-cd comision-85605-maria-pia-zaniboni
+cd comision-85605-maria-pia-zaniboni-entrega-final
 ```
 
 ------------------------------------------------------------------------
