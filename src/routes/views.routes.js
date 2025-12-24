@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { User } from "../models/User.model.js";
+import UserDTO from '../dto/user.dto.js'
 
 export const viewsRoutes = Router();
 
@@ -18,11 +18,9 @@ viewsRoutes.get('/current', async (req, res) => {
   try {
     if (!req.user) return res.redirect('/login');
 
-    const user = await User.findById(req.user.id)
-      .select('first_name last_name email age role')
-      .lean();
+    const userDto = new UserDTO(req.user);
 
-    res.render('current', { user });
+    res.render('current', { userDto });
   } catch (err) {
     next(err);
   }

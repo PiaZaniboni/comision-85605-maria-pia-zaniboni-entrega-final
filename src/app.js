@@ -7,10 +7,10 @@ import cookieParser from "cookie-parser";
 import { engine } from 'express-handlebars';
 import { initPassport } from './config/passport.js';
 
-import { sessionRoutes }  from  "./routes/sessions.routes.js";
-import { protectedRoutes }   from  "./routes/protected.routes.js";
-import { usersRoutes } from "./routes/users.routes.js";
-import { viewsRoutes } from "./routes/views.routes.js";
+import { sessionRoutes }  from  "./routes/sessions.router.js";
+import { protectedRoutes }   from  "./routes/protected.router.js";
+import { usersRoutes } from "./routes/users.router.js";
+import { viewsRoutes } from "./routes/views.router.js";
 
 import { attachUserFromCookie } from './middlewares/auth-cookie.js';
 import erroHandler from "./middlewares/error.handler.js";

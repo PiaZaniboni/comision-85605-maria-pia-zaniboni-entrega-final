@@ -4,14 +4,11 @@
 
 ## 📌 Descripción del Proyecto
 
-Este repositorio corresponde a la **Entrega Fianal** del curso **Backend II**, donde se implementa:
+Este repositorio corresponde a la **Entrega Fianal** del curso **Backend II**
 
--   CRUD de usuarios
--   Registro con contraseña encriptada con **bcrypt**
--   Autenticación y autorización utilizando **Passport**
--   Generación de **JWT** para manejo de sesiones
--   Validación del usuario autenticado mediante `/api/sessions/current`
--   Rutas para frontend utilizando Handlebars
+El proyecto implementa el patrón DAO para el acceso a datos y el patrón Repository para desacoplar la lógica de negocio de la persistencia.
+
+Se utilizan DTOs para exponer únicamente la información necesaria entre capas, evitando el envío de datos sensibles.
 
 ------------------------------------------------------------------------
 
