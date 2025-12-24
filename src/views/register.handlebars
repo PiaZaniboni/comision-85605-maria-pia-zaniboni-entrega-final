@@ -1,0 +1,25 @@
+<div class="container">
+  <h2>Crear cuenta</h2>
+
+  <form action="/api/sessions/register" method="POST">
+    
+    <label>Nombre</label>
+    <input type="text" name="first_name" required>
+
+    <label>Apellido</label>
+    <input type="text" name="last_name" required>
+
+    <label>Email</label>
+    <input type="email" name="email" required>
+
+    <label>Edad</label>
+    <input type="number" name="age" min="0" required>
+
+    <label>Contraseña</label>
+    <input type="password" name="password" required>
+
+    <button type="submit">Registrarme</button>
+  </form>
+
+  <p>¿Ya tenés cuenta? <a href="/login">Iniciar sesión</a></p>
+</div>

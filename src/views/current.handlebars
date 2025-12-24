@@ -1,0 +1,16 @@
+<div class="container">
+  <h2>Mi Perfil</h2>
+
+  <div class="card">
+    <p><strong>Nombre:</strong> {{user.first_name}}</p>
+    <p><strong>Apellido:</strong> {{user.last_name}}</p>
+    <p><strong>Email:</strong> {{user.email}}</p>
+    <p><strong>Edad:</strong> {{user.age}}</p>
+
+    <p><strong>Rol:</strong> 
+      {{user.role}}
+    </p>
+
+    <a href="/api/sessions/logout" class="logout">Cerrar sesión</a>
+  </div>
+</div>
