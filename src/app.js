@@ -8,10 +8,10 @@ import { engine } from 'express-handlebars';
 import { initPassport } from './config/passport.js';
 
 import { sessionRoutes }  from  "./routes/sessions.routes.js";
-/*import { protectedRoutes }   from  "./routes/protected.routes.js/index.js";
-import { viewsRoutes } from "./routes/views.routes.js";*/
+//import { viewsRoutes } from "./routes/views.routes.js";
 import { usersRoutes } from "./routes/users.routes.js";
 
+//Middlewares
 import { attachUserFromCookie } from './middlewares/auth-cookie.js';
 import erroHandler from "./middlewares/error.handler.js";
 
@@ -36,7 +36,7 @@ app.set('view engine', 'handlebars');
 app.set('views', './src/views');
 
 // Passport stateless
-initPassport(app)
+initPassport(app);
 app.use(attachUserFromCookie);
 
 //health, ruta para ver que la api esta en funcionamiento
@@ -44,7 +44,6 @@ app.get("/health", (_req,res)=> res.json({ok:true}));
 
 //Router
 app.use("/api/sessions", sessionRoutes);
-//app.use("/private", protectedRoutes);
 app.use("/api/users", usersRoutes);
 //app.use("/", viewsRoutes); 
 

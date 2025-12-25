@@ -39,7 +39,7 @@ export class UserService {
   }
 
   async updateUser(id, updateData) {
-    // No permitir actualizar el password desde aqui
+    // No actualizar el password aca
     const { password, ...safeData } = updateData;
     
     return await this.userRepository. update(id, safeData);
@@ -47,29 +47,5 @@ export class UserService {
 
   async deleteUser(id) {
     return await this.userRepository.delete(id);
-  }
-
-  //autenticacion
-  async authenticateUser(email, password) {
-    const normEmail = String(email).toLowerCase().trim();
-    const user = await this.userRepository.findByEmailWithPassword(normEmail);
-    
-    if (!user) {
-      return null;
-    }
-
-    const bcrypt = await import('bcryptjs');
-    const isValid = await bcrypt.compare(password, user.password);
-    
-    if (!isValid) {
-      return null;
-    }
-
-    // return sin el pass
-    return {
-      id: String(user._id),
-      email: user.email,
-      role: user.role
-    };
   }
 }
