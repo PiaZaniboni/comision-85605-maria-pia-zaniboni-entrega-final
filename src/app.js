@@ -8,8 +8,11 @@ import { engine } from 'express-handlebars';
 import { initPassport } from './config/passport.js';
 
 import { sessionRoutes }  from  "./routes/sessions.routes.js";
-//import { viewsRoutes } from "./routes/views.routes.js";
 import { usersRoutes } from "./routes/users.routes.js";
+import { productsRoutes } from "./routes/products.routes.js";
+import { cartsRoutes } from "./routes/carts.routes.js";
+import { ticketsRoutes } from "./routes/tickets.routes.js";
+//import { viewsRoutes } from "./routes/views.routes.js";
 
 //Middlewares
 import { attachUserFromCookie } from './middlewares/auth-cookie.js';
@@ -45,6 +48,9 @@ app.get("/health", (_req,res)=> res.json({ok:true}));
 //Router
 app.use("/api/sessions", sessionRoutes);
 app.use("/api/users", usersRoutes);
+app.use("/api/products", productsRoutes);
+app.use("/api/carts", cartsRoutes);
+app.use("/api/tickets", ticketsRoutes);
 //app.use("/", viewsRoutes); 
 
 //404
