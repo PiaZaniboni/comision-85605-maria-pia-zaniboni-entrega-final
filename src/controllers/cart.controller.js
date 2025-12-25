@@ -117,48 +117,57 @@ export class CartController {
   }
 
   // POST /api/carts/:cid/purchase - Finalizar compra
-  purchase = async (req, res, next) => {
+    purchase = async (req, res, next) => {
     try {
-      const { cid } = req.params;
+        const { cid } = req.params;
+        const purchaserEmail = req.user.email;
 
-      const purchaserEmail = req.user.email;
+        const result = await this.purchaseService.purchaseCart(cid, purchaserEmail);
 
-      const result = await this.purchaseService. purchaseCart(cid, purchaserEmail);
-
-      // Si habia productos sin stock, informar al cliente
-      if (result.failedProducts.length > 0) {
-        return res.status(207).json({  
-          status: 'partial',
-          message: 'Purchase completed partially.  Some products did not have enough stock.',
-          ticket: TicketDTO.fromModel(result.ticket),
-          failedProducts: result. failedProducts. map(fp => ({
+        // Si hubo productos sin stock, informar al cliente
+        if (result. failedProducts.length > 0) {
+        return res.status(207).json({  // 207 Multi-Status
+            status: 'partial',
+            message: 'Purchase completed partially. Some products did not have enough stock.',
+            ticket: TicketDTO. fromModel(result.ticket),
+            failedProducts: result.failedProducts. map(fp => ({
             productId: fp.product,
-            requestedQuantity: fp.quantity
-          }))
+            title: fp.title,
+            code: fp.code,
+            requestedQuantity:  fp.quantity,
+            availableStock: fp.availableStock
+            }))
         });
-      }
+        }
 
-      // Compra exitosa completa
-      res.status(201).json({
+        // Compra exitosa completa
+        res.status(201).json({
         status: 'success',
         message: 'Purchase completed successfully',
         ticket: TicketDTO.fromModel(result.ticket)
-      });
+        });
 
     } catch (err) {
-      if (err.code === 'CART_NOT_FOUND') {
+        if (err.code === 'CART_NOT_FOUND') {
         return res.status(404).json({ error: 'Cart not found' });
-      }
-      if (err.code === 'CART_EMPTY') {
+        }
+        if (err.code === 'CART_EMPTY') {
         return res.status(400).json({ error: 'Cart is empty' });
-      }
-      if (err.code === 'NO_STOCK') {
+        }
+        if (err.code === 'NO_STOCK') {
         return res.status(400).json({ 
-          error: 'No products with sufficient stock',
-          failedProducts: err.failedProducts
+            error: 'No products with sufficient stock',
+            failedProducts: err.failedProducts. map(fp => ({
+            productId: fp.product,
+            title: fp.title,
+            code: fp.code,
+            requestedQuantity: fp.quantity,
+            availableStock: fp.availableStock
+            }))
         });
-      }
-      next(err);
+        }
+        next(err);
     }
-  }
+    }
+
 }

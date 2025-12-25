@@ -54,7 +54,10 @@ export class PurchaseService {
         // NO HAY STOCK:  dejar en el carrito
         productsWithoutStock.push({
           product: product._id || product.id,
-          quantity: requestedQuantity
+          title: product.title,                    
+          code: product.code,                      
+          quantity: requestedQuantity,
+          availableStock: currentProduct.stock     
         });
       }
     }
@@ -77,6 +80,8 @@ export class PurchaseService {
       products: productsWithStock
     });
 
+    const ticketWithProducts = await this.ticketRepository. findById(ticket._id || ticket.id);
+
     //Actualizar el carrito (solo dejar productos sin stock)
     if (productsWithoutStock.length > 0) {
       await this.cartRepository.update(cartId, { products: productsWithoutStock });
@@ -87,7 +92,7 @@ export class PurchaseService {
 
     //Enviar email de confirmación
     try {
-      await this.emailService.sendPurchaseConfirmation(purchaserEmail, ticket);
+      await this.emailService.sendPurchaseConfirmation(purchaserEmail, ticketWithProducts);
     } catch (emailError) {
       console.error('❌ Error enviando email de confirmación:', emailError);
       // No fallar la compra si el email falla
@@ -95,7 +100,7 @@ export class PurchaseService {
 
     //Retornar resultado
     return {
-      ticket,
+      ticket:  ticketWithProducts,
       failedProducts: productsWithoutStock
     };
   }

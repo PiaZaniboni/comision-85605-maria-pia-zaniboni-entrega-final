@@ -29,4 +29,24 @@ export class TicketDTO {
       purchaser: ticket.purchaser
     };
   }
+
+  static forEmail(ticket) {
+    return {
+      code: ticket.code,
+      purchase_datetime: new Date(ticket.purchase_datetime).toLocaleString('es-AR', {
+        dateStyle: 'short',
+        timeStyle: 'short'
+      }),
+      amount: ticket. amount,
+      purchaser: ticket.purchaser,
+      products: ticket.products.map(item => ({
+        title: item.product.title,
+        code: item.product.code,
+        quantity: item.quantity,
+        price: item.price,
+        subtotal: item.price * item.quantity
+      }))
+    };
+  }
+  
 }

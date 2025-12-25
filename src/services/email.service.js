@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { TicketDTO } from '../dto/ticket.dto.js';
 
 const { EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS, EMAIL_FROM, FRONTEND_URL } = process.env;
 export class EmailService {
@@ -82,29 +83,147 @@ export class EmailService {
    * Email de confirmacion de compra
    */
   async sendPurchaseConfirmation(email, ticket) {
+
+    const ticketData = TicketDTO.forEmail(ticket);
+    
+    const productsTableRows = ticketData.products.map(item => `
+      <tr>
+        <td style="padding: 10px; border-bottom: 1px solid #ddd;">
+          <strong>${item.title}</strong><br>
+          <small style="color: #666;">Código: ${item.code}</small>
+        </td>
+        <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center;">${item.quantity}</td>
+        <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: right;">$${item.price.toLocaleString('es-AR')}</td>
+        <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: right;"><strong>$${item.subtotal.toLocaleString('es-AR')}</strong></td>
+      </tr>
+    `).join('');
+
     const mailOptions = {
       from: EMAIL_FROM,
       to: email,
-      subject: `Backend II - Confirmacion de compra - Ticket ${ticket.code}`,
+      subject: `✅ Confirmación de compra - Ticket ${ticketData.code}`,
       html: `
         <!DOCTYPE html>
         <html>
         <head>
           <style>
-            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-            .container { max-width: 600px; margin:  0 auto; padding: 20px; }
-            .ticket-info { background-color: #f8f9fa; padding:  15px; border-radius: 5px; margin: 20px 0; }
+            body { 
+              font-family: Arial, sans-serif; 
+              line-height: 1.6; 
+              color: #333; 
+              background-color: #f4f4f4;
+              margin: 0;
+              padding: 0;
+            }
+            .container { 
+              max-width: 600px; 
+              margin: 20px auto; 
+              background-color: white;
+              border-radius: 8px;
+              overflow: hidden;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .header {
+              background-color: #28a745;
+              color: white;
+              padding: 30px 20px;
+              text-align:  center;
+            }
+            . header h1 {
+              margin: 0;
+              font-size: 24px;
+            }
+            .content {
+              padding: 30px 20px;
+            }
+            .ticket-info { 
+              background-color: #f8f9fa; 
+              padding: 20px; 
+              border-radius:  5px; 
+              margin: 20px 0; 
+              border-left: 4px solid #28a745;
+            }
+            .ticket-info p {
+              margin: 8px 0;
+            }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+              margin: 20px 0;
+            }
+            th {
+              background-color: #f8f9fa;
+              padding: 12px 10px;
+              text-align:  left;
+              font-weight: bold;
+              border-bottom: 2px solid #dee2e6;
+            }
+            . total-row {
+              background-color: #f8f9fa;
+              font-weight: bold;
+              font-size: 18px;
+            }
+            .total-row td {
+              padding: 15px 10px;
+              border-top: 2px solid #28a745;
+            }
+            .footer { 
+              background-color: #f8f9fa;
+              padding: 20px; 
+              text-align: center;
+              font-size: 12px; 
+              color: #666; 
+            }
+            .success-icon {
+              font-size: 48px;
+              margin-bottom: 10px;
+            }
           </style>
         </head>
         <body>
           <div class="container">
-            <h2>¡Gracias por tu compra!</h2>
-            <div class="ticket-info">
-              <p><strong>Código de ticket:</strong> ${ticket.code}</p>
-              <p><strong>Fecha: </strong> ${new Date(ticket.purchase_datetime).toLocaleString()}</p>
-              <p><strong>Total:</strong> $${ticket.amount}</p>
+            <div class="header">
+              <div class="success-icon">✓</div>
+              <h1>¡Gracias por tu compra!</h1>
             </div>
-            <p>Tu pedido ha sido procesado exitosamente. </p>
+            
+            <div class="content">
+              <p>Hola,</p>
+              <p>Tu pedido ha sido procesado exitosamente. A continuación encontrarás los detalles de tu compra:</p>
+              
+              <div class="ticket-info">
+                <p><strong>📋 Código de ticket:</strong> ${ticketData. code}</p>
+                <p><strong>📅 Fecha: </strong> ${ticketData.purchase_datetime}</p>
+                <p><strong>👤 Comprador:</strong> ${ticketData.purchaser}</p>
+              </div>
+
+              <h3>📦 Productos adquiridos:</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th style="text-align: center;">Cantidad</th>
+                    <th style="text-align: right;">Precio Unit.</th>
+                    <th style="text-align: right;">Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${productsTableRows}
+                  <tr class="total-row">
+                    <td colspan="3" style="text-align: right;">TOTAL: </td>
+                    <td style="text-align: right; color: #28a745;">$${ticketData.amount.toLocaleString('es-AR')}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <p>Recibirás una notificación cuando tu pedido sea enviado. </p>
+              <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
+            </div>
+
+            <div class="footer">
+              <p>Este es un correo automático, por favor no respondas a este mensaje.</p>
+              <p>&copy; ${new Date().getFullYear()} Tu Tienda.  Todos los derechos reservados.</p>
+            </div>
           </div>
         </body>
         </html>
@@ -112,7 +231,7 @@ export class EmailService {
     };
 
     try {
-      const info = await this. transporter.sendMail(mailOptions);
+      const info = await this.transporter.sendMail(mailOptions);
       console.log('✅ Email de compra enviado:', info.messageId);
       return { success: true, messageId: info.messageId };
     } catch (error) {
