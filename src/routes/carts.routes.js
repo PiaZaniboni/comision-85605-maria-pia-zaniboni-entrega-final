@@ -38,3 +38,6 @@ cartsRoutes.put("/:cid/products/:pid", isAuthenticated, controller.updateProduct
 
 // DELETE /api/carts/:cid - Vaciar carrito
 cartsRoutes.delete("/:cid", isAuthenticated, controller.clearCart);
+
+// POST /api/carts/:cid/purchase - Finalizar compra (solo user)
+cartsRoutes.post("/:cid/purchase", isAuthenticated, requireRole(['user']), controller.purchase);

@@ -7,8 +7,15 @@ export class CartDAO {
   }
 
   async findById(id) {
-    return await Cart.findById(id).populate('products. product').lean();
-  }
+        const cart = await Cart.findById(id);
+        if (!cart) return null;
+        
+        if (cart. products && cart.products.length > 0) {
+            await cart.populate('products.product');
+        }
+        
+        return cart.toObject();
+ }
 
   async update(id, updateData) {
     return await Cart.findByIdAndUpdate(

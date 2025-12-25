@@ -1,9 +1,12 @@
 import { CartService } from '../services/cart.service.js';
+import { PurchaseService } from '../services/purchase.service.js';
 import { CartDTO } from '../dto/cart.dto.js';
+import { TicketDTO } from '../dto/ticket.dto.js';
 
 export class CartController {
   constructor() {
     this.cartService = new CartService();
+    this.purchaseService = new PurchaseService();
   }
 
   // POST /api/carts - Crear carrito
@@ -108,6 +111,52 @@ export class CartController {
     } catch (err) {
       if (err.code === 'CART_NOT_FOUND') {
         return res.status(404).json({ error: 'Cart not found' });
+      }
+      next(err);
+    }
+  }
+
+  // POST /api/carts/:cid/purchase - Finalizar compra
+  purchase = async (req, res, next) => {
+    try {
+      const { cid } = req.params;
+
+      const purchaserEmail = req.user.email;
+
+      const result = await this.purchaseService. purchaseCart(cid, purchaserEmail);
+
+      // Si habia productos sin stock, informar al cliente
+      if (result.failedProducts.length > 0) {
+        return res.status(207).json({  
+          status: 'partial',
+          message: 'Purchase completed partially.  Some products did not have enough stock.',
+          ticket: TicketDTO.fromModel(result.ticket),
+          failedProducts: result. failedProducts. map(fp => ({
+            productId: fp.product,
+            requestedQuantity: fp.quantity
+          }))
+        });
+      }
+
+      // Compra exitosa completa
+      res.status(201).json({
+        status: 'success',
+        message: 'Purchase completed successfully',
+        ticket: TicketDTO.fromModel(result.ticket)
+      });
+
+    } catch (err) {
+      if (err.code === 'CART_NOT_FOUND') {
+        return res.status(404).json({ error: 'Cart not found' });
+      }
+      if (err.code === 'CART_EMPTY') {
+        return res.status(400).json({ error: 'Cart is empty' });
+      }
+      if (err.code === 'NO_STOCK') {
+        return res.status(400).json({ 
+          error: 'No products with sufficient stock',
+          failedProducts: err.failedProducts
+        });
       }
       next(err);
     }

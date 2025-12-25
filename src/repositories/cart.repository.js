@@ -19,6 +19,16 @@ export class CartRepository {
     return cart;
   }
 
+  async update(id, updateData) {
+    const cart = await this.cartDAO.update(id, updateData);
+    if (!cart) {
+      const error = new Error('Cart not found');
+      error.code = 'CART_NOT_FOUND';
+      throw error;
+    }
+    return cart;
+  }
+
   async addProduct(cartId, productId, quantity) {
     const cart = await this.cartDAO.addProduct(cartId, productId, quantity);
     if (!cart) {
