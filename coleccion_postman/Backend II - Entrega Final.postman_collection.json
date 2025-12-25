@@ -1,0 +1,419 @@
+{
+	"info": {
+		"_postman_id": "65535247-b767-4244-b275-3b27fe0f3890",
+		"name": "Backend II - Entrega Final",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45345851",
+		"_collection_link": "https://zaniboni-5675.postman.co/workspace/Curso-Backend~f4b65143-fe2f-4a3c-a2b5-eb0a9857390d/collection/45345851-65535247-b767-4244-b275-3b27fe0f3890?action=share&source=collection_link&creator=45345851"
+	},
+	"item": [
+		{
+			"name": "USER - List Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/users",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USER - Data me",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/users/me",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USER  - Register user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name\": \"Nick\",\n    \"last_name\": \"Flander\",\n    \"email\": \"nick.flander@test.com\",\n    \"age\": 23,\n    \"password\": \"pass1234\",\n    \"cart\": null,\n    \"role\": \"admin\"    \n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/sessions/register",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"sessions",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SESSIONS - Login user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "/*USER*/\n/*\n{\n  \"email\": \"homero.simpson@test.com\",\n  \"password\": \"pass1234\"\n}*/\n\n/*ADMIN*/\n{\n    \"email\": \"pia.zaniboni@admin.com\",\n    \"password\": \"pass1234\"\n}\n\n/*USER NEW PASS*/\n/*{\n  \"email\": \"loco.flander@test.com\",\n  \"password\": \"pass5678\"\n}*/",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/sessions/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"sessions",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SESSIONS - Log out",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"ferro@ana.com\",\n  \"password\": \"435345\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/sessions/logout",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"sessions",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SESSIONS - Current (privado)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"homero.simpson@test.com\",\n  \"password\": \"pass1234\"\n}\n\n/*\n{\n    \"email\": \"pia.zaniboni@admin.com\",\n    \"password\": \"pass1234\"\n}*/"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/sessions/current",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"sessions",
+						"current"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SESSIONS - Recuperar contraseña",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"loco.flander@test.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/sessions/forgot-password",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"sessions",
+						"forgot-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SESSIONS - Reset Password",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/sessions/reset-password/8d3464eca9dd8a8c141c9e750398b5e82655bb4b540d2ead1ef51597e9c3f25d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"sessions",
+						"reset-password",
+						"8d3464eca9dd8a8c141c9e750398b5e82655bb4b540d2ead1ef51597e9c3f25d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SESSIONS - Reset Password POST",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"password\": \"pass5678\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/sessions/reset-password/8d3464eca9dd8a8c141c9e750398b5e82655bb4b540d2ead1ef51597e9c3f25d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"sessions",
+						"reset-password",
+						"8d3464eca9dd8a8c141c9e750398b5e82655bb4b540d2ead1ef51597e9c3f25d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PRODUCT - Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Amplificador Marshall MG30GFX\",\n  \"description\": \"Amplificador Marshall de 30W con efectos digitales integrados\",\n  \"code\": \"AMP001\",\n  \"price\": 560000,\n  \"stock\": 4,\n  \"category\": \"Amplificadores\",\n  \"thumbnails\": [\"https://example.com/marshall-mg30gfx.jpg\"]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/products",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PRODUCT - List",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/products",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CART - Create cart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/carts",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"carts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CART - Add product to cart",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"quantity\": 1\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/carts/694dc65fce3174349d593244/products/694db628825198d9b36d916b",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"carts",
+						"694dc65fce3174349d593244",
+						"products",
+						"694db628825198d9b36d916b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PURCHASE - Finalizar compra",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/carts/694dc65fce3174349d593244/purchase",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"carts",
+						"694dc65fce3174349d593244",
+						"purchase"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CART - Get Cart",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/carts/694db6e5825198d9b36d9193",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"carts",
+						"694db6e5825198d9b36d9193"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
