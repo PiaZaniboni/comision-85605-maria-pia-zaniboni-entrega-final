@@ -7,10 +7,10 @@ import cookieParser from "cookie-parser";
 import { engine } from 'express-handlebars';
 import { initPassport } from './config/passport.js';
 
-import { sessionRoutes }  from  "./routes/sessions.router.js";
-import { protectedRoutes }   from  "./routes/protected.router.js";
-import { usersRoutes } from "./routes/users.router.js";
-import { viewsRoutes } from "./routes/views.router.js";
+import { sessionRoutes }  from  "./routes/sessions.routes.js";
+/*import { protectedRoutes }   from  "./routes/protected.routes.js/index.js";
+import { viewsRoutes } from "./routes/views.routes.js";*/
+import { usersRoutes } from "./routes/users.routes.js";
 
 import { attachUserFromCookie } from './middlewares/auth-cookie.js';
 import erroHandler from "./middlewares/error.handler.js";
@@ -44,9 +44,9 @@ app.get("/health", (_req,res)=> res.json({ok:true}));
 
 //Router
 app.use("/api/sessions", sessionRoutes);
-app.use("/private", protectedRoutes);
+//app.use("/private", protectedRoutes);
 app.use("/api/users", usersRoutes);
-app.use("/", viewsRoutes); 
+//app.use("/", viewsRoutes); 
 
 //404
 app.use( (_req, res) => res.status(404).json({ message: 'Page not found' }) );
