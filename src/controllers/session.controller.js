@@ -1,5 +1,6 @@
 import { UserService } from '../services/user.services.js';
 import { UserDTO } from '../dto/user.dto.js';
+import { PasswordResetService } from '../services/password-reset.service.js';
 import passport from '../config/passport.js';
 import jwt from 'jsonwebtoken';
 
@@ -13,6 +14,7 @@ const { JWT_SECRET, JWT_EXPIRES = '15m' } = process.env;
 export class SessionController {
   constructor() {
     this.userService = new UserService();
+    this.passwordResetService = new PasswordResetService();
   }
 
   // POST /api/sessions/register - Registro publico
@@ -37,7 +39,7 @@ export class SessionController {
         cart: null,
       };
 
-      const user = await this.userService. createUser(userData);
+      const user = await this.userService.createUser(userData);
       
       res.status(201).json({ 
         ok: true, 
@@ -52,7 +54,7 @@ export class SessionController {
     }
   }
 
-  // POST /api/sessions/login - Inicio de sesion (PASSPORT)
+  // POST /api/sessions/login
   login = (req, res, next) => {
     passport.authenticate('local', { session: false }, (err, user, info) => {
       if (err) {
@@ -61,7 +63,7 @@ export class SessionController {
       
       if (!user) {
         return res.status(401).json({ 
-          error: info?. message || 'Invalid credentials' 
+          error: info?.message || 'Invalid credentials' 
         });
       }
 
@@ -101,10 +103,10 @@ export class SessionController {
     }
 
     try {
-      // Obtener datos completos del usuario desde la BD
+      // Obtener datos completos del usuario desde la base de datos
       const user = await this. userService.getUserById(req. user.id);
       
-      // Usar DTO específico para current (sin datos sensibles)
+      // Usar DTO especifico para current (sin datos sensibles)
       res.json({
         user: UserDTO.forCurrent(user)
       });
@@ -114,7 +116,7 @@ export class SessionController {
     }
   }
 
-  // GET /api/sessions/logout - Cerrar sesión
+  // GET /api/sessions/logout
   logout = (_req, res) => {
     res.clearCookie(COOKIE, { path: '/' });
     
@@ -124,4 +126,92 @@ export class SessionController {
 
     return res.json({ ok: true, message: 'Logged out successfully' });
   }
+
+  // ========== RECUPERAR CONTRASENIA ==========
+  // POST /api/sessions/forgot-password - Solicitar recuperacion
+  forgotPassword = async (req, res, next) => {
+    try {
+      const { email } = req.body;
+
+      if (!email) {
+        return res.status(400).json({ message: 'Email is required' });
+      }
+
+      await this.passwordResetService.requestPasswordReset(email);
+
+      // Siempre retornar success (por seguridad, no revelar si el email existe)
+      res.json({ 
+        ok: true, 
+        message: 'If the email exists, a password reset link has been sent' 
+      });
+
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  // GET /api/sessions/reset-password/:token - Validar token
+  validateResetToken = async (req, res, next) => {
+    try {
+      const { token } = req.params;
+
+      await this.passwordResetService.validateResetToken(token);
+
+      res.json({ 
+        ok: true, 
+        message: 'Token is valid' 
+      });
+
+    } catch (err) {
+      if (err.code === 'TOKEN_NOT_FOUND') {
+        return res.status(404).json({ error: 'Invalid token' });
+      }
+      if (err.code === 'TOKEN_EXPIRED') {
+        return res.status(400).json({ error: 'Token has expired' });
+      }
+      if (err.code === 'TOKEN_USED') {
+        return res.status(400).json({ error: 'Token has already been used' });
+      }
+      next(err);
+    }
+  }
+
+  // POST /api/sessions/reset-password/:token - Cambiar contrasenia
+  resetPassword = async (req, res, next) => {
+    try {
+      const { token } = req.params;
+      const { password } = req.body;
+
+      if (!password) {
+        return res.status(400).json({ message: 'Password is required' });
+      }
+
+      if (password.length < 6) {
+        return res.status(400).json({ message: 'Password must be at least 6 characters' });
+      }
+
+      await this.passwordResetService.resetPassword(token, password);
+
+      res.json({ 
+        ok: true, 
+        message: 'Password has been reset successfully' 
+      });
+
+    } catch (err) {
+      if (err.code === 'TOKEN_NOT_FOUND') {
+        return res.status(404).json({ error: 'Invalid token' });
+      }
+      if (err.code === 'TOKEN_EXPIRED') {
+        return res.status(400).json({ error: 'Token has expired' });
+      }
+      if (err.code === 'TOKEN_USED') {
+        return res.status(400).json({ error: 'Token has already been used' });
+      }
+      if (err.code === 'SAME_PASSWORD') {
+        return res.status(400).json({ error: 'New password must be different from the current password' });
+      }
+      next(err);
+    }
+  }
+
 }

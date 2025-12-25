@@ -36,5 +36,13 @@ export class UserDAO {
   //autenticacion
   async findByEmailWithPassword(email) {
     return await User.findOne({ email }); 
+  }
+
+  async updatePassword(id, hashedPassword) {
+    return await User.findByIdAndUpdate(
+        id,
+        { password: hashedPassword },
+        { new: true }
+    ).select('_id email').lean();
 }
 }

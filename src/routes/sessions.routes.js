@@ -13,7 +13,16 @@ sessionRoutes.post('/register', controller.register);
 sessionRoutes.post('/login', controller.login);
 
 // GET /api/sessions/current - Usuario actual (requiere autenticacion)
-sessionRoutes.get('/current', controller. getCurrent);
+sessionRoutes.get('/current', controller.getCurrent);
 
 // GET /api/sessions/logout - Log out
 sessionRoutes.get('/logout', controller.logout);
+
+// POST /api/sessions/forgot-password - Solicitar recuperacion
+sessionRoutes.post('/forgot-password', controller.forgotPassword);
+
+// GET /api/sessions/reset-password/: token - Validar token
+sessionRoutes.get('/reset-password/:token', controller.validateResetToken);
+
+// POST /api/sessions/reset-password/: token - Cambiar contrasenia
+sessionRoutes.post('/reset-password/:token', controller.resetPassword);
